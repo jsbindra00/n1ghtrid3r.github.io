@@ -17,16 +17,17 @@ h1
 }
 h2
 {
-  font-size:30px;
+  font-size:20px;
 }
 h3{
-  font-size:30px;
+  font-size: 20px;
 }
 .centertext
 {
   text-align: center;
   /* font-family: 'Righteous', cursive; */
-  font-family: 'Open Sans Condensed', sans-serif;
+  /* font-family: 'Open Sans Condensed', sans-serif; */
+  font-family: 'Gruppo', cursive;
 }
 
 .search {
