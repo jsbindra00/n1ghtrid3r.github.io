@@ -17,9 +17,14 @@
     }
 
 
+    function RandomNumberNegativeBounds(lowerBound, upperBound)
+    {
+        return (Math.random()*(2*upperBound + 1)) - lowerBound 
+    }
+    
     function RandomNumber(lowerBound, upperBound)
     {
-        return lowerBound + (Math.random()*upperBound)
+        return lowerBound + (Math.random()*upperBound); 
     }
 
 
@@ -42,13 +47,13 @@
 
     function GenerateParticles(numberofParticles)
     {
-        const maxVel = 1;
+        const maxVel = 1.5;
 
         const particles = []
 
         for(let i = 0; i < numberofParticles; ++i)
         {
-            particles.push(new Particle(RandomNumber(0,maxX), RandomNumber(0,maxY), RandomNumber(-maxVel, maxVel), RandomNumber(-maxVel, maxVel)));
+            particles.push(new Particle(RandomNumber(0,maxX), RandomNumber(0,maxY), RandomNumberNegativeBounds(-maxVel, maxVel), RandomNumberNegativeBounds(-maxVel, maxVel)));
         }
         return particles;
     }
@@ -57,8 +62,8 @@
 
     particles = GenerateParticles(300);
     const particleRadius = 3;
-    const particleDistanceThreshold = 100;
-    const maxNeighbors = 4;
+    const particleDistanceThreshold = 110;
+    const maxNeighbors = 5;
 
   
     function drawStuff() 
@@ -102,7 +107,7 @@
             for(otherParticleIndex in closestParticles)
             {
                 otherParticle = particles[closestParticles[otherParticleIndex]]
-                let strokeOpacity = 200/ closestParticlesDistances[otherParticleIndex];
+                let strokeOpacity = 150/ closestParticlesDistances[otherParticleIndex];
                 context.strokeStyle = 'rgba(0,0,0,' + strokeOpacity.toString() + ")";
                 context.moveTo(particle.posx, particle.posy);
                 context.lineTo(otherParticle.posx, otherParticle.posy);
