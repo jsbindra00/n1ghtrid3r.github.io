@@ -63,7 +63,7 @@
     particles = GenerateParticles(170);
     const particleRadius = 3;
     const particleDistanceThreshold = 110;
-    const maxNeighbors = 5;
+    const maxNeighbors = 8;
 
   
     function drawStuff() 
