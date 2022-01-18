@@ -60,7 +60,7 @@
 
 
 
-    particles = GenerateParticles(200);
+    particles = GenerateParticles(10);
     const particleRadius = 3;
     const particleDistanceThreshold = 110;
     const maxNeighbors = 5;
