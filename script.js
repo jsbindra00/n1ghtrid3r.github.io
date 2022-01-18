@@ -107,7 +107,7 @@
             for(otherParticleIndex in closestParticles)
             {
                 otherParticle = particles[closestParticles[otherParticleIndex]]
-                let strokeOpacity = 150/ closestParticlesDistances[otherParticleIndex];
+                let strokeOpacity = 200/ closestParticlesDistances[otherParticleIndex];
                 context.strokeStyle = 'rgba(0,0,0,' + strokeOpacity.toString() + ")";
                 context.moveTo(particle.posx, particle.posy);
                 context.lineTo(otherParticle.posx, otherParticle.posy);
