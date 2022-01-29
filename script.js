@@ -45,24 +45,31 @@
     const maxX = window.innerWidth;
     const maxY = window.innerHeight;
 
-    function GenerateParticles(numberofParticles)
+
+
+
+    function GenerateParticle(posx, posy)
     {
         const maxVel = 1.5;
+        return new Particle(posx, posy, RandomNumberNegativeBounds(-maxVel, maxVel), RandomNumberNegativeBounds(-maxVel, maxVel));
 
-        const particles = []
+    }
+    function GenerateParticles(numberofParticles)
+    {
 
+        let particles = [];
         for(let i = 0; i < numberofParticles; ++i)
         {
-            particles.push(new Particle(RandomNumber(0,maxX), RandomNumber(0,maxY), RandomNumberNegativeBounds(-maxVel, maxVel), RandomNumberNegativeBounds(-maxVel, maxVel)));
+            particles.push(GenerateParticle(RandomNumber(0,maxX), RandomNumber(0,maxY)))
         }
         return particles;
     }
 
 
 
-    particles = GenerateParticles(200);
+    particles = GenerateParticles(300);
     const particleRadius = 3;
-    const particleDistanceThreshold = 130;
+    const particleDistanceThreshold = 110;
     const maxNeighbors = 5;
 
   
@@ -107,7 +114,7 @@
             for(otherParticleIndex in closestParticles)
             {
                 otherParticle = particles[closestParticles[otherParticleIndex]]
-                let strokeOpacity = 200/ closestParticlesDistances[otherParticleIndex];
+                let strokeOpacity = 150/ closestParticlesDistances[otherParticleIndex];
                 context.strokeStyle = 'rgba(0,0,0,' + strokeOpacity.toString() + ")";
                 context.moveTo(particle.posx, particle.posy);
                 context.lineTo(otherParticle.posx, otherParticle.posy);
@@ -130,4 +137,24 @@
     window.addEventListener('resize', resizeCanvas, false);
     resizeCanvas();
         
+
+    function getCursorPosition(canvas, event) {
+        const rect = canvas.getBoundingClientRect()
+        const x = event.clientX - rect.left
+        const y = event.clientY - rect.top
+        for(let i = 0; i < 5; ++i)
+        {
+            particles.pop();
+        }
+        for(let i = 0; i < 5; ++i)
+        {
+            particle = GenerateParticle(x,y);
+            particles.push(particle);
+        }
+    
+    }
+    
+    canvas.addEventListener('mousedown', function(e) {
+        getCursorPosition(canvas, e)
+    })
 
