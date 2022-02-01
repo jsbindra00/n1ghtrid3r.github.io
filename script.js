@@ -67,7 +67,7 @@
 
 
 
-    particles = GenerateParticles(200);
+    particles = GenerateParticles(150);
     const particleRadius = 3;
     const particleDistanceThreshold = 110;
     const maxNeighbors = 4;
@@ -138,23 +138,24 @@
     resizeCanvas();
         
 
-    function getCursorPosition(canvas, event) {
+    function spawnParticles(canvas, event) {
         const rect = canvas.getBoundingClientRect()
         const x = event.clientX - rect.left
         const y = event.clientY - rect.top
+
+        
         for(let i = 0; i < 5; ++i)
         {
-            particles.pop();
-        }
-        for(let i = 0; i < 5; ++i)
-        {
+            let randomIndex = RandomNumber(0, particles.length);
+            particles.splice(randomIndex, 1);
             particle = GenerateParticle(x,y);
             particles.push(particle);
         }
+  
     
     }
     
     canvas.addEventListener('mousedown', function(e) {
-        getCursorPosition(canvas, e)
+        spawnParticles(canvas, e)
     })
 
