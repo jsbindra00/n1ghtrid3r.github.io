@@ -69,7 +69,7 @@
 
     particles = GenerateParticles(150);
     const particleRadius = 3;
-    const particleDistanceThreshold = 110;
+    const particleDistanceThreshold = 140;
     const maxNeighbors = 4;
 
   
@@ -114,7 +114,7 @@
             for(otherParticleIndex in closestParticles)
             {
                 otherParticle = particles[closestParticles[otherParticleIndex]]
-                let strokeOpacity = 150/ closestParticlesDistances[otherParticleIndex];
+                let strokeOpacity = 1000/ closestParticlesDistances[otherParticleIndex];
                 context.strokeStyle = 'rgba(0,0,0,' + strokeOpacity.toString() + ")";
                 context.moveTo(particle.posx, particle.posy);
                 context.lineTo(otherParticle.posx, otherParticle.posy);
