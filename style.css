@@ -1,29 +1,14 @@
 #centerpiece
 {
   text-align: center;
-  font-family: 'Oswald', sans-serif;
+  font-family: 'Gruppo', cursive;
   z-index: 2; 
-
-}
-#content
-{
-  position:absolute;
 
 }
 #socials
 {
   display:flex;
   justify-content: center;
-}
-#logo
-{
-  justify-content: center;
-
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top:0%;
-
 }
 #canvas {
 
