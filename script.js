@@ -81,8 +81,8 @@
         for(particleIndex in particles)
         {
             particle = particles[particleIndex];
-            // particle.posx += particle.velx;
-            // particle.posy += particle.vely;
+            particle.posx += particle.velx;
+            particle.posy += particle.vely;
 
 
             if(particle.posx < 0) particle.posx = maxX;
@@ -106,10 +106,7 @@
                 }
 
             }
-            context.fillStyle = "#FF0000";
-            context.beginPath();
-            context.arc(particle.posx, particle.posy, particleRadius, 0, 2 * Math.PI);
-            context.fill();
+          
             
             for(otherParticleIndex in closestParticles)
             {
@@ -121,6 +118,10 @@
                 context.stroke();
             }
 
+            context.fillStyle = "#FF0000";
+            context.beginPath();
+            context.arc(particle.posx, particle.posy, particleRadius, 0, 2 * Math.PI);
+            context.fill();
 
         }
 
