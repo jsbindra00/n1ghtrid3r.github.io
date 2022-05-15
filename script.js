@@ -3,7 +3,20 @@
 // for each particle, check for particles which are below a distance of epsilon away.
     // draw a link between this particle and the other particle with intensity proportional to epsilon
 
+    var stop = false;
+    var frameCount = 0;
+    var fps, fpsInterval, startTime, now, then, elapsed;
 
+    
+
+    function startAnimating(fps) {
+        
+        fpsInterval = 1000 / fps;
+        then = Date.now();
+        startTime = then;
+        resizeCanvas()
+
+    }
 
     class Particle
     {
@@ -41,11 +54,8 @@
     const context = canvas.getContext('2d');
 
 
-
     const maxX = window.innerWidth;
     const maxY = window.innerHeight;
-
-
 
 
     function GenerateParticle(posx, posy)
@@ -77,53 +87,69 @@
     {
         // do your drawing stuff here
         requestAnimationFrame(drawStuff)
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        for(particleIndex in particles)
-        {
-            particle = particles[particleIndex];
-            particle.posx += particle.velx;
-            particle.posy += particle.vely;
+        now = Date.now();
+        elapsed = now - then;
+    
+        // if enough time has elapsed, draw the next frame
+    
+        if (elapsed > fpsInterval) {
+    
+            // Get ready for next frame by setting then=now, but also adjust for your
+            // specified fpsInterval not being a multiple of RAF's interval (16.7ms)
+            then = now - (elapsed % fpsInterval);
+    
+            // Put your drawing code here
 
-
-            if(particle.posx < 0) particle.posx = maxX;
-            else if (particle.posx > maxX) particle.posx = 0;
-            if(particle.posy < 0) particle.posy = maxY;
-            else if(particle.posy > maxY) particle.posy = 0;
-            
-            const closestParticles = []
-            const closestParticlesDistances = []
-
-            for(otherParticleIndex in particles)
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            for(particleIndex in particles)
             {
-                if(closestParticles.length >= maxNeighbors) break;
-                if(particleIndex == otherParticleIndex) continue;
-                var distSq = DistanceSq(particle, particles[otherParticleIndex])
-                if(distSq < Math.pow(particleDistanceThreshold, 2))
+                particle = particles[particleIndex];
+                particle.posx += particle.velx;
+                particle.posy += particle.vely;
+    
+    
+                if(particle.posx < 0) particle.posx = maxX;
+                else if (particle.posx > maxX) particle.posx = 0;
+                if(particle.posy < 0) particle.posy = maxY;
+                else if(particle.posy > maxY) particle.posy = 0;
+                
+                const closestParticles = []
+                const closestParticlesDistances = []
+    
+                for(otherParticleIndex in particles)
                 {
-                    closestParticles.push(otherParticleIndex);
-                    closestParticlesDistances.push(distSq);
-
+                    if(closestParticles.length >= maxNeighbors) break;
+                    if(particleIndex == otherParticleIndex) continue;
+                    var distSq = DistanceSq(particle, particles[otherParticleIndex])
+                    if(distSq < Math.pow(particleDistanceThreshold, 2))
+                    {
+                        closestParticles.push(otherParticleIndex);
+                        closestParticlesDistances.push(distSq);
+    
+                    }
+    
                 }
-
+              
+                
+                for(otherParticleIndex in closestParticles)
+                {
+                    otherParticle = particles[closestParticles[otherParticleIndex]]
+                    let strokeOpacity = 1000/ closestParticlesDistances[otherParticleIndex];
+                    context.strokeStyle = 'rgba(0,0,0,' + strokeOpacity.toString() + ")";
+                    context.moveTo(particle.posx, particle.posy);
+                    context.lineTo(otherParticle.posx, otherParticle.posy);
+                    context.stroke();
+                }
+    
+                context.fillStyle = "#FF0000";
+                context.beginPath();
+                context.arc(particle.posx, particle.posy, particleRadius, 0, 2 * Math.PI);
+                context.fill();
+    
             }
-          
-            
-            for(otherParticleIndex in closestParticles)
-            {
-                otherParticle = particles[closestParticles[otherParticleIndex]]
-                let strokeOpacity = 1000/ closestParticlesDistances[otherParticleIndex];
-                context.strokeStyle = 'rgba(0,0,0,' + strokeOpacity.toString() + ")";
-                context.moveTo(particle.posx, particle.posy);
-                context.lineTo(otherParticle.posx, otherParticle.posy);
-                context.stroke();
-            }
-
-            context.fillStyle = "#FF0000";
-            context.beginPath();
-            context.arc(particle.posx, particle.posy, particleRadius, 0, 2 * Math.PI);
-            context.fill();
-
+    
         }
+
 
     }
 
@@ -134,9 +160,8 @@
                     
         drawStuff(); 
     }
-    // resize the canvas to fill browser window dynamically
     window.addEventListener('resize', resizeCanvas, false);
-    resizeCanvas();
+    startAnimating(60)
         
 
     function spawnParticles(canvas, event) {
